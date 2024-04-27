@@ -10,3 +10,4 @@ docker container exec -it php_container bash
 conposer install
 conposer update
 ```
+[http://localhost:80](http://localhost:80)にアクセスしてlalavelのWelcomeページが表示されれば成功
