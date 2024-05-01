@@ -9,10 +9,11 @@ git cloneだけだと必要なファイルが存在しないためビルド後�
 docker container exec -it php_container bash
 conposer install
 conposer update
+exit
 ```
 [http://localhost:80](http://localhost:80)にアクセスしてlalavelのWelcomeページが表示されれば成功
 
-srcディレクトリ下に環境変数を格納する.envがないため作成
+srcディレクトリ下に環境変数を格納する.envがないため作成。作成後コピペ
 <details>
 
 <summary>./src/.env</summary>
@@ -79,3 +80,26 @@ VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
 ```
 
 </details>
+
+今の状態だと、`docker-compose.yml`のdbコンテナに記述されたtest_dbが作成されていないことに加え、ユーザであるtestにアクセス権が付与されていない。
+以下のコマンドを実行して順に処理していく。
+
+mariadbコンテナに入り、rootでmariadbにアクセス。パスワードは`docker-compose.yml`に記述してある`rootpass`
+```
+docker container exec -it mariadb_container bash
+mariadb -u root -p
+```
+
+`test_db`データベースを作成し、作成されたことを確認。
+```
+CREATE DATABASE test_db;
+show databases;
+```
+
+`docker-compose.yml`に記述してあるユーザ`test`にアクセス権を付与し、有効化する。
+```
+GRANT ALL PRIVILEGES ON * . * TO 'test'@'%';
+FLUSH PRIVILEGES;
+```
+
+コンテナから抜けて`docker-compose up -d --build`で再構築する。
