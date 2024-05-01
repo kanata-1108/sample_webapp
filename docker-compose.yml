@@ -1,39 +1,45 @@
 version: '3'
 
 services:
-  php:
-    build: ./docker/php
-    container_name: php_container
+  laravel:
+    build: ./php
+    restart: always
+    container_name: laravel_container
     ports:
       - '80:80'
     volumes:
-      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
-      - ./src:/var/www/html/myapp
-    environment:
-      COMPOSER_ALLOW_SUPERUSER: 1
-  
+      - ./php/php.ini:/usr/local/etc/php/php.ini
+      - ./src:/var/www/html
+ 
   db:
-    build: ./docker/db
-    container_name: db_container
+    image: mariadb
+    restart: always
+    container_name: mariadb_container
     ports:
       - '3306:3306'
     volumes:
       - ./db_data:/var/lib/mysql
     environment:
-      MYSQL_USER: test
-      MYSQL_PASSWORD: test
       MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: sample
+      MYSQL_USER: test
+      MYSQL_PASSWORD: testpass
+      MYSQL_DATABASE: test_db
+      TZ: 'Asia/Tokyo'
     
   phpmyadmin:
     image: phpmyadmin
+    restart: always
     container_name: phpmyadmin_container
     ports:
-      - '8080:80'
+      - '3000:80'
     volumes:
       - ./phpmyadmin/sessions:/sessions
     environment:
-      - PMA_ARBITRARY=1
-      - PMA_HOST=db
+      - PMA_HOSTS=db
       - PMA_USER=root
       - PMA_PASSWORD=rootpass
+    depends_on:
+      - db
+  
+volumes:
+  db_data:
