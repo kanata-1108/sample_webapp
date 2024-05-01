@@ -7,17 +7,15 @@ docker-compose up -d --build
 git cloneだけだと必要なファイルが存在しないためビルド後に以下の手順で作成する
 ```
 docker container exec -it laravel_container bash
-conposer install
-conposer update
+composer install
 ```
-[http://localhost:80](http://localhost:80)にアクセスしてlalavelのWelcomeページが表示されれば成功
 
-srcディレクトリ下に環境変数を格納する.envがないため作成。作成後コピペ
-<details>
-
-<summary>./src/.env</summary>
+srcディレクトリ下に環境変数を格納する.envがないため、.env.sampleの内容をコピーしてDB関連の環境変数を以下のように書き換え
 
 ```
+cp .env.example .env
+```
+```.env
 APP_NAME=Laravel
 APP_ENV=local
 APP_KEY=base64:fOI0U6dDAKbcKgY3HWmAPW50wiG8rG4RIZbIc9Ygc54=
@@ -78,7 +76,7 @@ VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"
 VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
 ```
 
-</details>
+[http://localhost:80](http://localhost:80)にアクセスしてlalavelのWelcomeページが表示されれば成功
 
 今の状態だと、`docker-compose.yml`のdbコンテナに記述されたtest_dbが作成されていないことに加え、ユーザであるtestにアクセス権が付与されていない。
 以下のコマンドを実行して順に処理していく。
