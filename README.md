@@ -15,7 +15,7 @@ srcディレクトリ下に環境変数を格納する.envがないため、.env
 ```
 cp .env.example .env
 ```
-```:.env
+```txt:.env
 
 DB_CONNECTION=mysql
 DB_HOST=db
