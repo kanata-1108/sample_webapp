@@ -6,10 +6,9 @@ docker-compose up -d --build
 ```
 git cloneだけだと必要なファイルが存在しないためビルド後に以下の手順で作成する
 ```
-docker container exec -it php_container bash
+docker container exec -it laravel_container bash
 conposer install
 conposer update
-exit
 ```
 [http://localhost:80](http://localhost:80)にアクセスしてlalavelのWelcomeページが表示されれば成功
 
@@ -103,3 +102,9 @@ FLUSH PRIVILEGES;
 ```
 
 コンテナから抜けて`docker-compose up -d --build`で再構築する。
+
+laravelコンテナに入って`test_db`をlaravelの機能であるマイグレーションで管理できるようにする。
+```
+docker container exec -it laravel_container bash
+php artisan migrate
+```
