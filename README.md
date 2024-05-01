@@ -16,6 +16,7 @@ srcディレクトリ下に環境変数を格納する.envがないため作成
 <details>
 
 <summary>./src/.env</summary>
+
 ```
 APP_NAME=Laravel
 APP_ENV=local
